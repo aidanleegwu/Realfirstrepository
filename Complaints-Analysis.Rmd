@@ -1,0 +1,40 @@
+---
+title: "Test Complaints"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+complaints <- readRDS("complaints.rds")
+
+View(complaints)
+
+company_issues <- complaints %>% 
+  filter(issue == "Problem with a credit reporting company's investigation into an existing problem", ) %>% 
+  group_by(company) %>% 
+  count(issue, sub_issue) %>% 
+  arrange(desc(n))
+
+legal_action <- complaints %>% 
+  filter(issue == "Took or threatened to take negative or legal action") %>% 
+  group_by(company, sub_product) %>% 
+  count(issue) %>% 
+  arrange(desc(n))
+
+view(legal_action)
+
+
+write_rds(legal_action, "legal_action.xlsx")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
